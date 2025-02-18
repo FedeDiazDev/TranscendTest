@@ -1,6 +1,6 @@
-import { navigateTo } from "./router.js";
+import { Navbar } from "./components/Navbar.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("nav-home")?.addEventListener("click", () => navigateTo("/"));
-  document.getElementById("nav-game")?.addEventListener("click", () => navigateTo("/game"));
+  const app = document.getElementById("app");
+  document.body.insertBefore(Navbar(), app);
 });

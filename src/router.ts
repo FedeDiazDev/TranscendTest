@@ -1,19 +1,41 @@
-const routes: Record<string, () => string> = {
-    "/": () => "<h2 class='text-2xl'>🏠 Bienvenido al Inicio</h2>",
-    "/game": () => "<h2 class='text-2xl'>🎮 ¡Vamos a jugar Pong!</h2>",
-  };
-  
-  const render = () => {
-    const app = document.getElementById("app");
-    if (app) {
-      app.innerHTML = (routes[window.location.pathname] || (() => "<h2>404 - Página no encontrada</h2>"))();
-    }
-  };
-  
-  window.addEventListener("popstate", render);
-  
-  export const navigateTo = (path: string) => {
-    window.history.pushState({}, "", path);
-    render();
-  };
-  
+import { Home } from "./pages/home.js";
+import { Game } from "./pages/game.js";
+
+const routes: Record<string, () => HTMLElement> = {
+  "/": Home,
+  "/profile": () => {
+    const div = document.createElement("div");
+    div.innerHTML = "<h2>👤 Perfil del usuario</h2>";
+    return div;
+  },
+  "/friends": () => {
+    const div = document.createElement("div");
+    div.innerHTML = "<h2>🫂 Lista de amigos</h2>";
+    return div;
+  },
+  "/stats": () => {
+    const div = document.createElement("div");
+    div.innerHTML = "<h2>📊 Estadísticas</h2>";
+    return div;
+  },
+};
+
+export const render = () => {
+  const app = document.getElementById("app");
+  if (app) {
+    app.innerHTML = "";
+    const component = routes[window.location.pathname] || (() => {
+      const div = document.createElement("div");
+      div.innerHTML = "<h2>404 - Página no encontrada</h2>";
+      return div;
+    });
+    app.appendChild(component());
+  }
+};
+
+window.addEventListener("popstate", render);
+
+export const navigateTo = (path: string) => {
+  window.history.pushState({}, "", path);
+  render();
+};
